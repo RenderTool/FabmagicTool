@@ -275,6 +275,10 @@ textarea {
   overflow: auto;
 }
 
+.options{
+  display: flex;
+  align-items: baseline;
+}
 .options_top {
   border-collapse: collapse;
   border-spacing: 0;
@@ -286,12 +290,9 @@ textarea {
   align-items: stretch;
   /* padding: 1rem; */
 }
-
-.option_text {
+.option_text{
   display: flex;
   justify-content: space-between;
-  padding: 0.1rem;
-  align-items: baseline;
 }
 
 .tables {
@@ -320,7 +321,8 @@ textarea {
 
 
 .Canvasinfo {
-  grid-area: Canvasinfo;
+ display: flex;
+ align-items: baseline;
 }
 
 
@@ -374,7 +376,7 @@ textarea {
   height: 100%;
   width: 100%;
 }
-file_jpg_qual{
+.file_jpg_qual{
   font-size: 11px;
   display: flex;
   align-items: baseline;
