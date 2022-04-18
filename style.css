@@ -1,0 +1,391 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  overflow: hidden;
+}
+
+span {
+  font-size: small;
+}
+
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+
+/* 新加 */
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+
+:root {
+  --c-action-primary: #2e44ff;
+  --c-action-primary-accent: #e9e5ff;
+  --c-action-secondary: #e5e5e5;
+  --c-text-primary: #0d0f21;
+  --c-text-secondary: #6a6b76;
+  --c-background-primary: #ffffff;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  color: var(--c-text-primary);
+  background-color: var(--c-background-primary);
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+input,
+button,
+select,
+textarea {
+  font: inherit;
+}
+
+
+/* main */
+
+.container {
+  display: flex;
+  height: 100vh;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-content: space-around;
+}
+
+/* left */
+.left {
+  /* display: flex; */
+  grid-area: Texture2D;
+  justify-content: space-evenly;
+  flex-direction: column;
+  width: 360px;
+  /* margin: 5px; */
+  /* height: 100vh; */
+  padding: 5px;
+  /* border: 1px solid #2e44ff78; */
+  overflow: auto ! important;
+  /* border-radius: 8px; */
+  /* box-shadow: 0 1px 3px 0 rgb(0 0 0 / 14%); */
+}
+
+/* modalbody-start */
+.modal-body {
+  /* padding: 1rem; */
+}
+
+.modal-title {
+  font-weight: 700;
+}
+
+.upload-head {
+  font-family: Inter;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: 5px;
+  padding: 1px;
+  text-align: left;
+  /* border-bottom: 1px solid var(--c-text-secondary); */
+  display: flex;
+  justify-content: space-between;
+}
+
+.upload-text {
+  border: none;
+  color: rgb(0, 0, 0);
+  background-color: transparent;
+  border-color: transparent;
+  text-align: right;
+}
+
+.upload-area {
+  padding: 2rem;
+  border: none;
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%23ccc' stroke-width='3' stroke-dasharray='6%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+  background-color: transparent;
+}
+
+.upload-area:hover,
+.upload-area:focus {
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%232e44ff' stroke-width='3' stroke-dasharray='6%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+}
+
+.upload-area-icon {
+  display: block;
+  /* width: 2.25rem; */
+  height: 2.25rem;
+}
+
+.upload-area-icon svg {
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.upload-area-title {
+  margin-top: 1rem;
+  display: block;
+  font-weight: 700;
+  color: var(--c-text-primary);
+}
+
+.upload-area-description {
+  display: block;
+  color: var(--c-text-secondary);
+}
+
+.upload-area-description strong {
+  color: var(--c-action-primary);
+  font-weight: 700;
+}
+
+/* modelbody-end */
+
+
+/* options_top */
+.column {
+  display: flex;
+  flex-direction: column;
+  align-content: stretch;
+  justify-content: space-between;
+  min-height: 200px;
+  /* border: 1px solid #9f9f9f78; */
+}
+
+.column_top {
+  /* height: 100%; */
+  overflow: auto;
+}
+
+.options_top {
+  border-collapse: collapse;
+  border-spacing: 0;
+  display: flex;
+  /* margin: 5px; */
+  text-align: left;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: stretch;
+  /* padding: 1rem; */
+}
+
+.option_text {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.1rem;
+  align-items: baseline;
+}
+
+.tables {
+  display: flex;
+  justify-content: space-around;
+}
+
+.d_bt {
+  display: flex;
+  flex-direction: column;
+}
+
+.download {
+  /* background-color: #2e44ff;
+  color: #fff; */
+  cursor: pointer;
+  border-radius: 2px;
+  margin: 2px;
+}
+
+.Tool {
+  grid-area: Tool;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.Canvasinfo {
+  grid-area: Canvasinfo;
+}
+
+
+.Toolinfo {
+  grid-area: Toolinfo;
+}
+
+.downloadbt1 {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.sizetop {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-start;
+}
+
+.tabs {
+  overflow: auto;
+  display: flex;
+  font-size: small;
+  justify-content: space-evenly;
+  padding: 5px;
+}
+
+/* right */
+.right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+}
+
+.preview {
+  grid-area: preview;
+  /* border: 1px solid #909090; */
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: calc(100% - 360px);
+  justify-content: space-between;
+}
+
+.Canvas {
+  grid-area: Canvas;
+  line-height: 0px;
+  /* height: 100vh; */
+  /* width: 100vw; */
+  height: 100%;
+  width: 100%;
+}
+file_jpg_qual{
+  font-size: 11px;
+  display: flex;
+  align-items: baseline;
+}
+#total_transparency{
+  font-size: 11px;
+display: flex;
+align-items: baseline;
+}
+::-webkit-scrollbar{
+
+  width:10px;
+  
+  }

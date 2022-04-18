@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="ch">
+
+<head>
+	<meta charset="utf-8">
+
+	<!-- <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" /> -->
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+	<meta name="description" content="布魔方布料编辑器">
+	<meta name="author" content="Christian Petry">
+	<meta name="language" CONTENT="chinese">
+	<meta name="keywords"
+		content="Normalmap,Normal,Mapping,Online,cpetry,github,NormalMap-Generator,Heightmap,Javascript">
+	<meta name="page-topic" content="Dienstleistung">
+	<meta name="robots" content="index,follow">
+
+	<title>NormalMap-Online</title>
+	<link rel="icon" type="image/png" href="images/favicon.png" />
+	<link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:700">
+	<link type="text/css" rel="stylesheet" href="./style.css">
+</head>
+
+<body style="text-align: center">
+
+	<div class="container">
+
+		<!-- left	 -->
+		<div class="left">
+			<!-- 上传 -->
+			<div class="upload-head">图片上传</div>
+			<div class="modal-body">
+				<button class="upload-area" onclick="select_file_height.click()" onmouseover="">
+					<span class="upload-area-icon">
+						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+							width="340.531" height="419.116" viewBox="0 0 340.531 419.116">
+							<g id="files-new" clip-path="url(#clip-files-new)">
+								<path id="Union_2" data-name="Union 2"
+									d="M-2904.708-8.885A39.292,39.292,0,0,1-2944-48.177V-388.708A39.292,39.292,0,0,1-2904.708-428h209.558a13.1,13.1,0,0,1,9.3,3.8l78.584,78.584a13.1,13.1,0,0,1,3.8,9.3V-48.177a39.292,39.292,0,0,1-39.292,39.292Zm-13.1-379.823V-48.177a13.1,13.1,0,0,0,13.1,13.1h261.947a13.1,13.1,0,0,0,13.1-13.1V-323.221h-52.39a26.2,26.2,0,0,1-26.194-26.195v-52.39h-196.46A13.1,13.1,0,0,0-2917.805-388.708Zm146.5,241.621a14.269,14.269,0,0,1-7.883-12.758v-19.113h-68.841c-7.869,0-7.87-47.619,0-47.619h68.842v-18.8a14.271,14.271,0,0,1,7.882-12.758,14.239,14.239,0,0,1,14.925,1.354l57.019,42.764c.242.185.328.485.555.671a13.9,13.9,0,0,1,2.751,3.292,14.57,14.57,0,0,1,.984,1.454,14.114,14.114,0,0,1,1.411,5.987,14.006,14.006,0,0,1-1.411,5.973,14.653,14.653,0,0,1-.984,1.468,13.9,13.9,0,0,1-2.751,3.293c-.228.2-.313.485-.555.671l-57.019,42.764a14.26,14.26,0,0,1-8.558,2.847A14.326,14.326,0,0,1-2771.3-147.087Z"
+									transform="translate(2944 428)" fill="var(--c-action-primary)" />
+							</g>
+						</svg>
+					</span>
+					<span class="upload-area-title">拖入图片或点击上传</span>
+				</button>
+			</div>
+			<!-- tab切换通道 -->
+			<div class="upload-head">属性调整</div>
+					<!-- 贴图预览 -->
+					<div class="texture_container" style="display: flex;justify-content: space-evenly;">
+						<!-- Normal Texture -->
+						<div class="view" id="normal_map">
+							<span class="helper"></span><canvas class="preview_img" id="normal_img" />
+						</div>
+		
+						<!-- Displacement Texture -->
+						<div class="view" id="displacement_map" style="display: none;">
+							<span class="helper"></span><canvas class="preview_img" id="displace_img" />
+						</div>
+		
+						<!-- Ambient Occlusion Texture -->
+						<div class="view" id="ao_map" style="display: none;">
+							<span class="helper"></span><canvas class="preview_img" id="ao_img" />
+						</div>
+		
+						<!-- Specular Texture -->
+						<div class="view" id="specular_map" style="display: none;">
+							<span class="helper"></span><canvas class="preview_img" id="specular_img" />
+						</div>
+		
+					</div>
+			<div class="tabs">
+				<input class="tab_button" id="tab_btn_normal" type="button"
+					onclick="NMO_Main.activate_texture('normal');" disabled value="Normal" />
+				<input class="tab_button" id="tab_btn_displace" type="button"
+					onclick="NMO_Main.activate_texture('displace');" value="Displacement" />
+				<input class="tab_button" id="tab_btn_ao" type="button" onclick="NMO_Main.activate_texture('ao');"
+					value="AmbientOcc" />
+				<input class="tab_button" id="tab_btn_specular" type="button"
+					onclick="NMO_Main.activate_texture('Roughness');" value="Roughness" />
+			</div>
+			<!-- 通道设置 -->
+			<div class="column">
+				<!-- Normal Settings -->
+				<div class="column_top" id="normal_settings" style="width:100%;">
+					<div class="options_top">
+
+						<div class="option_text">
+							<span>强度</span>
+							<input id="strength_nmb" type="number" step="0.01" style="width:20%;vertical-align:top;"
+								value='2.5' min='0.01' max='5'
+								onchange="NMO_NormalMap.setNormalSetting('strength', this.value); document.getElementById('strength_slider').value = this.value;">
+						</div>
+						<div class="options">
+							<input id="strength_slider"
+								onchange="NMO_NormalMap.setNormalSetting('strength', this.value); document.getElementById('strength_nmb').value = this.value;"
+								oninput="NMO_NormalMap.setNormalSetting('strength', this.value); document.getElementById('strength_nmb').value = this.value;"
+								style="width:100%;" type="range" value='2.5' min='0.01' max='5' step='0.01' />
+						</div>
+
+						<div class="option_text">
+							<span>色阶</span>
+							<input id="level_nmb" type="number" step="0.01" style="width:20%;vertical-align:top;"
+								value='7.0'
+								onchange="NMO_NormalMap.setNormalSetting('level', this.value); document.getElementById('level_slider').value = this.value;">
+						</div>
+						<div class="options">
+							<input id="level_slider"
+								onchange="NMO_NormalMap.setNormalSetting('level', this.value);  document.getElementById('level_nmb').value = this.value;"
+								oninput="NMO_NormalMap.setNormalSetting('level', this.value);  document.getElementById('level_nmb').value = this.value;"
+								style="width:100%;" type="range" value='7.0' min='4' max='10' step='0.1' />
+						</div>
+
+						<div class="option_text">
+							<span>模糊/锐化</span>
+							<input id="blur_sharp_nmb" type="number" step="0.01" style="width:20%;vertical-align:top;"
+								value='0'
+								onchange="NMO_NormalMap.setNormalSetting('blur_sharp', this.value); document.getElementById('blur_sharp_slider').value = this.value;">
+						</div>
+						<div class="options">
+							<input id="blur_sharp_slider"
+								onchange="NMO_NormalMap.setNormalSetting('blur_sharp', this.value); document.getElementById('blur_sharp_nmb').value = this.value;"
+								oninput="NMO_NormalMap.setNormalSetting('blur_sharp', this.value); document.getElementById('blur_sharp_nmb').value = this.value;"
+								style="width:100%;" type="range" value='0' min='-32' max='32' step='1' />
+						</div>
+
+						<div class="option_text">
+							<span>过滤</span>
+							<div>
+								<select
+									onChange="NMO_NormalMap.setNormalSetting('type', this.options[this.selectedIndex].value)">
+									<option value="sobel">Sobel</option>
+									<option value="scharr">Scharr</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="option_text">
+							<span>反向</span>
+							<input id="invert_r" type="checkbox" onclick="NMO_NormalMap.invertRed()" />R
+							<input id="invert_g" type="checkbox" onclick="NMO_NormalMap.invertGreen()" />G
+							<input id="invert_height" type="checkbox" onclick="NMO_NormalMap.invertSource()" />
+							<span>Height</span>
+						</div>
+					</div>
+				</div>
+				<!-- Displacement Settings -->
+				<div class="column_top" id="displacement_settings" style="display: none;width:100%;">
+					<div class="options_top">
+						<div class="option_text">
+							<span>对比</span>
+							<input id="dm_contrast_nmb" type="number" step="0.01" style="width:20%;vertical-align:top;"
+								value='-0.5'
+								onchange="document.getElementById('dm_contrast_slider').value = this.value;NMO_DisplacementMap.setDisplacementSetting('contrast', this.value);">
+						</div>
+						<div class="options">
+							<input id="dm_contrast_slider"
+								onchange="NMO_DisplacementMap.setDisplacementSetting('contrast', this.value); document.getElementById('dm_contrast_nmb').value = this.value;"
+								oninput="NMO_DisplacementMap.setDisplacementSetting('contrast', this.value); document.getElementById('dm_contrast_nmb').value = this.value;"
+								style="width:100%;" type="range" value='-0.5' min='-1' max='1' step='0.01' />
+						</div>
+						<div class="option_text">
+							<span>模糊/锐化</span>
+							<input id="dm_blur_sharp_nmb" type="number" step="0.01"
+								style="width:20%;vertical-align:top;" value='0'
+								onchange="NMO_DisplacementMap.setDisplacementSetting('blur_sharp', this.value); document.getElementById('dm_blur_sharp_slider').value = this.value;">
+						</div>
+						<div class="options">
+							<input id="dm_blur_sharp_slider"
+								onchange="NMO_DisplacementMap.setDisplacementSetting('blur_sharp', this.value); document.getElementById('dm_blur_sharp_nmb').value = this.value;"
+								oninput="NMO_DisplacementMap.setDisplacementSetting('blur_sharp', this.value); document.getElementById('dm_blur_sharp_nmb').value = this.value;"
+								style="width:100%;" type="range" value='0' min='-32' max='32' step='1' />
+						</div>
+						<div class="option_text">
+							<span>反向</span>
+							<div>
+								<input id="invert_height" type="checkbox"
+									onclick="NMO_DisplacementMap.invertDisplacement(); NMO_DisplacementMap.setDisplacementContrast(document.getElementById('dm_contrast_nmb').value);" />
+							</div>
+						</div>
+
+
+					</div>
+				</div>
+				<!-- Ambient Occlusion Settings -->
+				<div class="column_top" id="ao_settings" style="display: none;width:100%;">
+					<div class="options_top">
+						<div class="option_text">
+							<span> 强度</span>
+							<input id="ao_strength_nmb" type="number" step="0.01" style="width:20%;vertical-align:top;"
+								value='0.5'
+								onchange="NMO_AmbientOccMap.setAOSetting('strength', this.value); document.getElementById('ao_strength_slider').value = this.value;">
+						</div>
+						<div class="options">
+							<input id="ao_strength_slider"
+								onchange="NMO_AmbientOccMap.setAOSetting('strength', this.value); document.getElementById('ao_strength_nmb').value = this.value;"
+								oninput="NMO_AmbientOccMap.setAOSetting('strength', this.value); document.getElementById('ao_strength_nmb').value = this.value;"
+								style="width:100%;" type="range" value='0.5' min='0' max='1' step='0.01' />
+						</div>
+
+						<div class="option_text">
+							<span>Mean</span>
+							<input id="ao_mean_nmb" type="number" step="0.01" style="width:20%;vertical-align:top;"
+								value='1'
+								onchange="NMO_AmbientOccMap.setAOSetting('mean', this.value); document.getElementById('ao_mean_slider').value = this.value;">
+						</div>
+						<div class="options">
+							<input id="ao_mean_slider"
+								onchange="NMO_AmbientOccMap.setAOSetting('mean', this.value); document.getElementById('ao_mean_nmb').value = this.value;"
+								oninput="NMO_AmbientOccMap.setAOSetting('mean', this.value); document.getElementById('ao_mean_nmb').value = this.value;"
+								style="width:100%;" type="range" value='1' min='0' max='1' step='0.01' />
+						</div>
+						<div class="option_text">
+							<span>范围</span>
+							<input id="ao_range_nmb" type="number" step="0.01" style="width:20%;vertical-align:top;"
+								value='1'
+								onchange="NMO_AmbientOccMap.setAOSetting('range', this.value); document.getElementById('ao_range_slider').value = this.value;">
+						</div>
+						<div class="options">
+							<input id="ao_range_slider"
+								onchange="NMO_AmbientOccMap.setAOSetting('range', this.value); document.getElementById('ao_range_nmb').value = this.value;"
+								oninput="NMO_AmbientOccMap.setAOSetting('range', this.value); document.getElementById('ao_range_nmb').value = this.value;"
+								style="width:100%;" type="range" value='1' min='0' max='1' step='0.01' />
+						</div>
+
+						<div class="option_text">
+							<span>模糊/锐化</span>
+							<input id="ao_blur_sharp_nmb" type="number" step="0.01"
+								style="width:20%;vertical-align:top;" value='0'
+								onchange="NMO_AmbientOccMap.setAOSetting('blur_sharp', this.value); document.getElementById('ao_blur_sharp_slider').value = this.value;">
+						</div>
+						<div class="options">
+							<input id="ao_blur_sharp_slider"
+								onchange="NMO_AmbientOccMap.setAOSetting('blur_sharp', this.value); document.getElementById('ao_blur_sharp_nmb').value = this.value;"
+								oninput="NMO_AmbientOccMap.setAOSetting('blur_sharp', this.value); document.getElementById('ao_blur_sharp_nmb').value = this.value;"
+								style="width:100%;" type="range" value='0' min='-32' max='32' step='1' />
+						</div>
+						<div class="option_text">
+							<span>反向</span>
+							<div>
+								<input id="invert_AO" type="checkbox" onclick="NMO_AmbientOccMap.invertAO();" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Specular Settings -->
+				<div class="column_top" id="specular_settings" style="display: none;width:100%;">
+					<div class="options_top">
+						<div class="option_text">
+							<span>强度</span>
+							<input id="specular_strength_nmb" type="number" step="0.01"
+								style="width:20%;vertical-align:top;" value='1'
+								onchange="NMO_SpecularMap.setSpecularSetting('spec_strength', this.value); document.getElementById('specular_strength_slider').value = this.value;">
+						</div>
+						<div class="options">
+							<input id="specular_strength_slider"
+								onchange="NMO_SpecularMap.setSpecularSetting('spec_strength', this.value); document.getElementById('specular_strength_nmb').value = this.value;"
+								oninput="NMO_SpecularMap.setSpecularSetting('spec_strength', this.value); document.getElementById('specular_strength_nmb').value = this.value;"
+								style="width:100%;" type="range" value='1' min='0' max='1' step='0.01' />
+						</div>
+						<div class="option_text">
+							<span>Mean</span>
+							<input id="specular_mean_nmb" type="number" step="0.01"
+								style="width:20%;vertical-align:top;" value='1'
+								onchange="NMO_SpecularMap.setSpecularSetting('spec_mean', this.value); document.getElementById('specular_mean_slider').value = this.value;">
+						</div>
+						<div class="options">
+							<input id="specular_mean_slider"
+								onchange="NMO_SpecularMap.setSpecularSetting('spec_mean', this.value); document.getElementById('specular_mean_nmb').value = this.value;"
+								oninput="NMO_SpecularMap.setSpecularSetting('spec_mean', this.value); document.getElementById('specular_mean_nmb').value = this.value;"
+								style="width:100%;" type="range" value='1' min='0' max='1' step='0.01' />
+						</div>
+
+						<div class="option_text">
+							<span>范围</span>
+							<input id="specular_range_nmb" type="number" step="0.01"
+								style="width:20%;vertical-align:top;" value='1'
+								onchange="NMO_SpecularMap.setSpecularSetting('spec_range', this.value); document.getElementById('specular_range_slider').value = this.value;">
+						</div>
+						<div class="options">
+							<input id="specular_range_slider"
+								onchange="NMO_SpecularMap.setSpecularSetting('spec_range', this.value); document.getElementById('specular_range_nmb').value = this.value;"
+								oninput="NMO_SpecularMap.setSpecularSetting('spec_range', this.value); document.getElementById('specular_range_nmb').value = this.value;"
+								style="width:100%;" type="range" value='1' min='0' max='1' step='0.01' />
+
+						</div>
+						<div class="option_text">
+							<span>衰减</span>
+							<select
+								onChange="NMO_SpecularMap.setSpecularSetting('spec_falloff', this.options[this.selectedIndex].value)">
+								<option value="no">No</option>
+								<option value="linear" selected>Linear</option>
+								<option value="square">Square</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Download Button -->
+			<div class="upload-head">
+				<span>导出设置</span>
+				<input  class="upload-text "
+						id="size" type="text" size="30" maxlength="30" readonly>
+			</div>
+			<div class="downloadbt1">
+				<input id="file_name" type="text" placeholder="NormalMap" size="12">
+				<div id="file_jpg_qual" style="display:none;">
+					质量 <input type="number" id="file_jpg_qual_nmb" step="1" style="width:100px;" min='0' max='100'
+						value="95" size="4"> %
+				</div>
+				<div id="total_transparency" style="font-size:11px;">
+					透明度 <input type="number" id="transparency_nmb" step="1" style="width:100px;" value='100' max='100'
+						min='0'> %
+				</div>
+				<select id="file_type" onChange="NMO_Main.switchJPGQual();">
+					<option value="png" selected>PNG</option>
+					<option value="jpg">JPG</option>
+					<option value="tiff">TIFF</option>
+				</select>
+				<!--<img src="images/Download_NormalMap_128.png"/>-->
+			</div>
+			<div class="d_bt"><button id="download" class="download"><b>下载单张</b></button>
+				</td>
+				<td><button id="download_all" class="download"><b>下载所有</b></button>
+				</td>
+				<div class="right" style="display: none;">
+					<div class="Tool">
+						<div style="position: absolute; top:20px;display: none;">
+							<button class="download" style="width: 7em;  height: 2em;"
+								onclick="select_multiple_height_files.click()">
+								<input id="select_multiple_height_files" type="file" accept="image/*, .tga"
+									onpropertychange="handleFileSelect()" style="position:absolute;visibility:hidden;"
+									multiple>
+								Batch mode
+							</button>
+							<a class="various" href="#batch_mode_help"><img src="images/help.png" /></a>
+						</div>
+					</div>
+
+					<div class="tabs" style="margin-bottom: 10px; text-align:right;">
+						<input class="tab_button" id="tab_btn_heightmap" type="button" value="HeightMap"
+							onclick="NMO_Main.activate_height_tab('height')" disabled />
+						<input class="tab_button" id="tab_btn_pictures" type="button" value="Pictures"
+							onclick="NMO_Main.activate_height_tab('pictures')" />
+					</div>
+					<div class="view" id="height_map" style="display: inline-block;float: left;">
+						<input id="select_file_height" type="file" accept="image/*, .tga"
+							onpropertychange="handleFileSelect()" style="position:absolute;visibility:hidden;" />
+						<canvas id="height_canvas" onclick="select_file_height.click()" onmouseover=""
+							style="cursor: pointer;"></canvas>
+					</div>
+					<div class="view" id="pictures_map" style="display: inline-block;float: left; display:none;">
+						<input id="select_file_above" type="file" accept="image/*, .tga"
+							onpropertychange="handleFileSelect()" style="position:absolute;visibility:hidden;" />
+						<input id="select_file_left" type="file" accept="image/*, .tga"
+							onpropertychange="handleFileSelect()" style="position:absolute;visibility:hidden;" />
+						<input id="select_file_right" type="file" accept="image/*, .tga"
+							onpropertychange="handleFileSelect()" style="position:absolute;visibility:hidden;" />
+						<input id="select_file_below" type="file" accept="image/*, .tga"
+							onpropertychange="handleFileSelect()" style="position:absolute;visibility:hidden;" />
+						<div class="pictures_view">
+							<div class="pictures_view_row">
+								<div class="pictures_view_cell">
+
+								</div>
+								<div class="pictures_view_cell drop_cell" id="picture_below_drop">
+									<canvas id="picture_canvas_below" style="width:100%; height: 100%; cursor: pointer;"
+										onclick="select_file_below.click()" onmouseover=""></canvas>
+								</div>
+							</div>
+							<div class="pictures_view_row">
+								<div class="pictures_view_cell drop_cell" id="picture_right_drop">
+									<canvas id="picture_canvas_right" style="width:100%; height: 100%; cursor: pointer;"
+										onclick="select_file_right.click()" onmouseover=""></canvas>
+								</div>
+								<div class="pictures_view_cell">
+
+								</div>
+
+								<div class="pictures_view_cell drop_cell" id="picture_left_drop">
+									<canvas id="picture_canvas_left" style="width:100%; height: 100%; cursor: pointer;"
+										onclick="select_file_left.click()" onmouseover=""></canvas>
+								</div>
+
+							</div>
+							<div class="pictures_view_row">
+								<div class="pictures_view_cell">
+
+								</div>
+								<div class="pictures_view_cell drop_cell" id="picture_above_drop">
+									<canvas id="picture_canvas_above" style="width:100%; height: 100%; cursor: pointer;"
+										onclick="select_file_above.click()" onmouseover=""></canvas>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="view" id="photo_map" style="display: none;">
+						<canvas id="photo_canvas"></canvas>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<!-- right -->
+		<div class="preview">
+
+			<!-- p1	 -->
+			<table class="p1">
+				<tbody class="tbd">
+					<tr style="height:30px;display: flex;align-items: center;">
+						<td class="options">
+
+							<input id="input_diffuse" type="checkbox" value="Diffuse"
+								onclick="NMO_RenderView.toggleDiffuse()" disabled="">Diffuse
+
+							<input id="select_diffuse_file" type="file" accept="image/*, .tga"
+								onpropertychange="handleDiffuseFileSelect()"
+								style="position:absolute;visibility:hidden;">
+
+							<input type="button" id="browseDiffuseButton" value="Load..."
+								onclick="select_diffuse_file.click();">
+
+							<input id="input_specular" type="checkbox" value="Roughness"
+								onclick="NMO_RenderView.toggleSpecular()" checked="">Roughness
+
+							<input id="input_normal" type="checkbox" value="normal"
+								onclick="NMO_RenderView.toggleNormal()" checked="">Normal
+							<input id="input_ao" type="checkbox" value="ao" onclick="NMO_RenderView.toggleAO()"
+								checked="">AO
+							<input id="input_displacement" type="checkbox" value="displacement"
+								onclick="NMO_RenderView.setDisplacement(document.getElementById('input_displacement').checked)"
+								style="vertical-align: middle;" checked="">Displacement
+							<input id="dm_strength_slider" style="width:100px; vertical-align: middle;"
+								onchange="NMO_DisplacementMap.setDisplaceStrength( this.value); document.getElementById('dm_strength_nmb').value = this.value;"
+								oninput="NMO_DisplacementMap.setDisplaceStrength( this.value); document.getElementById('dm_strength_nmb').value = this.value;"
+								type="range" value="0.3" min="-1" max="1" step="0.01">
+							<input id="dm_strength_nmb" type="number" step="0.01"
+								style="width:6rem;vertical-align: middle;" value="0.3"
+								onchange="NMO_DisplacementMap.setDisplaceStrength(this.value); document.getElementById('dm_strength_slider').value = this.value;">
+
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<!-- p2 -->
+			<div class="Canvas" id="render_view">
+				<a class="render_magnifier big_preview" href="#renderBig" style="display:none;overflow:hidden;">
+					<img src="images/iconmonstr-magnifier-6-icon-16.png">
+				</a>
+				<div id="renderBig" style="display:none;overflow:hidden;"> </div>
+			</div>
+			<!-- p3 -->
+			<div class="Canvasinfo">
+				<table>
+					<tbody class="tbd">
+						<tr style="height:30px;display: flex;align-items: center;">
+							<td class="option_text">
+								<span>模型</span>
+							</td>
+							<td class="options">
+								<select id="model"
+									onchange="NMO_RenderView.setModel(document.getElementById('model').value)">
+									<option selected="">Cube</option>
+									<option>Plane</option>
+									<option>Sphere</option>
+									<option>Cylinder</option>
+									<option>custom</option>
+
+								</select>
+								<input id="select_model_file" type="file" accept=".obj"
+									onpropertychange="NMO_FileDrop.handleModelFileSelect()"
+									style="position:absolute;visibility:hidden;">
+								<input type="button" id="browseModelButton" value="Load .obj"
+									onclick="select_model_file.click();">
+								<input id="input_rot" type="checkbox" value="rotation"
+									onclick="NMO_RenderView.toggleRotation()" checked=""> 旋转
+								<input id="input_enviroment" type="checkbox" value="normal"
+									onclick="NMO_RenderView.setEnvironment(document.getElementById('input_enviroment').checked)">环境
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+</body>
+
+<!-- Add jQuery library -->
+<script src="javascripts/extern/jquery-2.1.1.min.js"></script>
+<script src="javascripts/extern/jquery-ui.min.js"></script>
+
+
+<!-- Add fancyBox -->
+<link rel="stylesheet" href="javascripts/fancybox/source/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
+<script type="text/javascript" src="javascripts/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+<script src="javascripts/extern/three.min.js"></script>
+
+<script src="javascripts/extern/blob.js"></script>
+<script src="javascripts/extern/canvas-toBlob.js"></script>
+<script src="javascripts/extern/canvastotiff.min.js"></script>
+<script src="javascripts/extern/CopyShader.js"></script>
+<script src="javascripts/extern/filesaver.min.js"></script>
+<script src="javascripts/extern/EffectComposer.js"></script>
+<script src="javascripts/extern/MaskPass.js"></script>
+<script src="javascripts/extern/OBJLoader.js"></script>
+<script src="javascripts/extern/OrbitControls.js"></script>
+<script src="javascripts/extern/readTGA.js"></script>
+<script src="javascripts/extern/RenderPass.js"></script>
+<script src="javascripts/extern/ShaderPass.js"></script>
+<script src="javascripts/extern/TeapotBufferGeometry.js"></script>
+
+<script src="javascripts/shader/NormalMapShader.js"></script>
+<script src="javascripts/shader/NormalToHeightShader.js"></script>
+<script src="javascripts/shader/NormalMapFromPicturesShader.js"></script>
+<script src="javascripts/shader/AmbientOcclusionShader.js"></script>
+<script src="javascripts/shader/DisplacementShader.js"></script>
+<script src="javascripts/shader/SpecularShader.js"></script>
+<script src="javascripts/shader/HorizontalBlurShader.js"></script>
+<script src="javascripts/shader/VerticalBlurShader.js"></script>
+
+<script type="text/javascript" src="javascripts/filedrop.js"></script>
+<script type="text/javascript" src="javascripts/filters.js"></script>
+<script type="text/javascript" src="javascripts/renderView.js"></script>
+<script type="text/javascript" src="javascripts/renderNormalview.js"></script>
+<script type="text/javascript" src="javascripts/normalMap.js"></script>
+<script type="text/javascript" src="javascripts/displaceMap.js"></script>
+<script type="text/javascript" src="javascripts/ambientOccMap.js"></script>
+<script type="text/javascript" src="javascripts/specularMap.js"></script>
+<script type="text/javascript" src="javascripts/diffuseMap.js"></script>
+<script type="text/javascript" src="javascripts/main.js"></script>
+
+</html>
