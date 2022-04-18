@@ -55,6 +55,7 @@ var NMO_Main = new function(){
 				NMO_DisplacementMap.createDisplacementMap();
 				NMO_AmbientOccMap.createAmbientOcclusionTexture();
 				NMO_SpecularMap.createSpecularTexture();
+				
 				$('#height_map').show("slide", {direction: "left"}, 400);
 			});
 		}

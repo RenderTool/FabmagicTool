@@ -49,7 +49,10 @@ NMO_FileDrop = new function(){
 		console.log(evt.target.param);
 		if (typeof evt !== 'undefined'){
 	    	if (evt.target.param === 'height')
-		    	NMO_FileDrop.readImage(evt.target.files[0], "height", ""); // files is a FileList of File objects. List some properties.
+			{
+		    	NMO_FileDrop.readImage(evt.target.files[0], "height", "");
+				handleDiffuseFileSelect(evt);
+			}
 			else if (evt.target.param === 'multiple_height')
 			{
 				for (var i=0; i<evt.target.files.length; i++)
@@ -141,6 +144,7 @@ NMO_FileDrop = new function(){
 			}
 			if (type === "height")
 				NMO_FileDrop.loadHeightmap(data);
+		
 			else if (type === "pictures")
 				NMO_FileDrop.loadHeightFromPictures(data, direction);
 			
@@ -224,13 +228,12 @@ NMO_FileDrop = new function(){
 			NMO_SpecularMap.createSpecularTexture();
 
 
+
 	    };
 		
 	    this.height_image.src = './images/standard_height.png';	
+		
 	};
-
-
-
 
 	this.loadHeightFromPictures = function(source, direction){
 		var pic_canvas_above = document.getElementById("picture_canvas_above");

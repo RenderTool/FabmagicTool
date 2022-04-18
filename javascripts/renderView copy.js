@@ -52,6 +52,7 @@ var NMO_RenderView = new function(){
 
 	this.initRenderer = function(){
 		this.renderer.setSize( w,h);
+		//renderer.physicallyBasedShading = true;
 		this.renderer.shadowMap.enabled = true;
 		this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
@@ -64,6 +65,8 @@ var NMO_RenderView = new function(){
 	        y: 0,
 	        z: 0
 	    });
+		//this.camera.aspect = rendersize.clientHeight/rendersize.clientWidth;
+		
 		var controls = new THREE.OrbitControls( this.camera, this.renderer.domElement );
 		
 		
@@ -97,9 +100,9 @@ var NMO_RenderView = new function(){
 		
 		
 		
-		//this.diffuse_map			= new THREE.Texture( diffuse_canvas );
-
-		this.diffuse_map			= new THREE.Texture( diffuse_canvas);
+		//var height_canvas   = document.getElementById('height_canvas');
+		
+		this.diffuse_map			= new THREE.Texture( diffuse_canvas );
 		this.specular_map  			= new THREE.Texture( NMO_SpecularMap.specular_canvas );
 		this.normal_map  			= new THREE.Texture( NMO_NormalMap.normal_canvas );
 		this.displacement_map		= new THREE.Texture( NMO_DisplacementMap.displacement_canvas );
@@ -120,12 +123,23 @@ var NMO_RenderView = new function(){
 		] );
 		
 		
-		var shader = THREE.ShaderLib.phong 
+		//var shader = THREE.NormalDisplacementShader;
+		var shader = THREE.ShaderLib.phong
 		
 		// see ShaderLib (https://github.com/mrdoob/three.js/blob/master/src/renderers/shaders/ShaderLib.js)
 		var uniforms = THREE.UniformsUtils.clone( shader.uniforms );
+		
+		//uniforms[ "diffuse" ].value = new THREE.Color(0xbbbbbb);
+		//uniforms[ "specular" ].value = new THREE.Color(0x777777);
+		//uniforms[ "ambientLightColor" ].value = new THREE.Color(0x000000);
+
+		//console.log(this.diffuse_map);
+		//uniforms["color"].value 	           = new THREE.Color("rgb(255, 0, 0)");
 		var textureLoader = new THREE.TextureLoader();
+
 		shaderUniforms = uniforms;
+		//shaderUniforms.aoMap = this.ao_map;
+		//console.log(shaderUniforms);
 
 		var defines = {};
 
@@ -134,6 +148,7 @@ var NMO_RenderView = new function(){
 		if (document.getElementById('input_displacement').checked)
 			defines[ "USE_DISPLACEMENTMAP" ] = "";
 		defines[ "USE_AOMAP" ] = "";
+		
 		
 		//defines[ "USE_LIGHTMAP" ] = "";
 		defines[ "USE_NORMALMAP" ] = "";

@@ -29,8 +29,8 @@
 		<div class="left">
 			<!-- 上传 -->
 			<div class="upload-head">图片上传</div>
-			<div class="modal-body">
-				<button class="upload-area" onclick="select_file_height.click()" onmouseover="">
+			<div class="modal-body" id="height_map">
+				<button class="upload-area" onclick="select_file_height.click();" onmouseover="">
 					<span class="upload-area-icon">
 						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
 							width="340.531" height="419.116" viewBox="0 0 340.531 419.116">
@@ -47,7 +47,9 @@
 			<!-- tab切换通道 -->
 			<div class="upload-head">属性调整</div>
 			<!-- 贴图预览 -->
+
 			<div class="texture_container" style="display: flex;justify-content: space-evenly;">
+
 				<!-- Normal Texture -->
 				<div class="view" id="normal_map">
 					<span class="helper"></span><canvas class="preview_img" id="normal_img" />

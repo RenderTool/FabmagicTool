@@ -1,5 +1,6 @@
-var diffuse_canvas = document.createElement("canvas");
 
+var diffuse_canvas = document.createElement("canvas");
+ 
 function handleDiffuseFileSelect(evt) {
     var files = evt.target.files; // FileList object
     readDiffuseImage(evt.target.files[0]); // files is a FileList of File objects. List some properties.
